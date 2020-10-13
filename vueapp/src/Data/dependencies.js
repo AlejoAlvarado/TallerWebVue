@@ -1,4 +1,4 @@
-export const dependencies = [
+export const Dependencies = [
 
     
 ]

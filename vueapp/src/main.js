@@ -5,6 +5,9 @@ import Home from './components/Home';
 import vuetify from './plugins/vuetify';
 import User from './components/User'
 import Dependency from './components/Dependency'
+import Users from './components/Users'
+import Dependencies from './components/Dependencies'
+
 
 
 
@@ -22,6 +25,16 @@ const routes =[
   {
     path: '/dependency',
     component: Dependency,   
+
+  },
+  {
+    path: '/users',
+    component: Users,   
+
+  },
+  {
+    path: '/dependencies',
+    component: Dependencies,   
 
   },
  

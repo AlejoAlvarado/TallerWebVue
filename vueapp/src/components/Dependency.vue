@@ -42,7 +42,12 @@
           </v-col>
         </v-row>
 
-        <v-btn :disabled="!valid" color="success" class="mr-4" @click="createDepency">
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="createDepency"
+        >
           Guardar
         </v-btn>
       </v-form>
@@ -56,18 +61,16 @@ import { Dependencies } from "../Data/dependencies";
 export default {
   data() {
     return {
-      id:0,
+      id: 0,
       dependency: {
         id: 0,
         name: " ",
         coor: " ",
         location: " ",
         max: 0,
-        active: false
+        active: false,
       },
-      dependency2:{
-
-      },
+      dependency2: {},
 
       nameRules: [
         (name) => !!name || "Obligatorio",
@@ -78,25 +81,28 @@ export default {
     };
   },
   methods: {
-    refresh(){
+    refresh() {
       this.dependency = {
         id: 0,
         name: " ",
         coor: " ",
         location: " ",
         max: 0,
-        active: false
-      }
+        active: false,
+      };
     },
     createDepency() {
-      this.dependency.id=this.id
-      console.log(this.dependency)
+      if (Dependencies.length != 0) {
+        console.log("Dependencies.length != 0: "+ Dependencies.length)
+        this.id=Dependencies[Dependencies.length - 1].id+1;
+      }
+      this.dependency.id = this.id;
+      console.log(this.dependency);
       Dependencies.push(this.dependency);
-      this.dependency2=Dependencies
-      this.refresh()
-      this.id=this.id+1
+      this.dependency2 = Dependencies;
+      this.refresh();
+      this.id = this.id + 1;
     },
-    
   },
 };
 </script>

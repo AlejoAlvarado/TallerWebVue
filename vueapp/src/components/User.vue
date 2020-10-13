@@ -133,7 +133,10 @@
 
           <v-row>
             <v-col cols="12" md="4">
-              <v-checkbox v-model="user.active" label="Activar usuario"></v-checkbox>
+              <v-checkbox
+                v-model="user.active"
+                label="Activar usuario"
+              ></v-checkbox>
             </v-col>
           </v-row>
 
@@ -146,6 +149,17 @@
             Guardar
           </v-btn>
         </v-form>
+        <v-alert
+          border="left"
+          color="orange"
+          dense
+          dismissible
+          outlined
+          prominent
+          text
+          
+          type="info"
+        >Esta dependencia no puede recibir mas miembros</v-alert>
       </div>
     </v-container>
   </div>
@@ -174,9 +188,7 @@ export default {
         (name) => !!name || "Obligatorio",
         (name) => name.length > 2 || "El nombre es muy corto",
       ],
-      user2: {
-
-      },
+      user2: {},
       modal1: false,
       modal2: false,
       dateInit: new Date().toISOString().substr(0, 10),
@@ -200,21 +212,24 @@ export default {
       };
     },
     createUser() {
-      if (Users.length != 0) {
-        console.log("Users.length != 0: "+ Users.length)
-        this.id=Users[Users.length - 1].id+1;
+      if (this.user.dependency.members.length + 1 > this.user.dependency.max) {
+        this.refresh();
+      } else {
+        if (Users.length != 0) {
+          console.log("Users.length != 0: " + Users.length);
+          this.id = Users[Users.length - 1].id + 1;
+        }
+        this.user.id = this.id;
+        this.user.valid_until = this.dateFinal;
+        this.user.dependency = this.select;
+        console.log(this.user);
+        Users.push(this.user);
+        this.user2 = Users;
+        this.refresh();
+        this.id = this.id + 1;
       }
-      this.user.id = this.id;
-      this.user.valid_until=this.dateFinal
-      this.user.dependency=this.select
-      console.log(this.user);
-      Users.push(this.user);
-      this.user2 = Users;
-      this.refresh();
-      this.id = this.id + 1;
     },
-  }
-
+  },
 };
 </script>
 

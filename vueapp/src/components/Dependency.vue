@@ -69,6 +69,7 @@ export default {
         location: " ",
         max: 0,
         active: false,
+        members:[]
       },
       dependency2: {},
 

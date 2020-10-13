@@ -6,7 +6,8 @@ export const Dependencies = [
         coor: "Pepito",
         location: "Zona nueva",
         max: 10,
-        active: true
+        active: true,
+        members: []
     },
 
     {
@@ -15,7 +16,8 @@ export const Dependencies = [
         coor: "Perez",
         location: "Edificio M",
         max: 20,
-        active: true
+        active: true,
+        members:[]
     }
     
 ]

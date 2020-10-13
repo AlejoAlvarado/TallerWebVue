@@ -1,127 +1,221 @@
 <template>
   <div>
-     <v-container >
-    
-    
-    <div class="form-wrapper">
-      <v-form ref="form" v-model="valid" lazy-validation>
-        <v-row>
+    <v-container>
+      <div class="form-wrapper">
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row>
             <v-col>
-                 <v-text-field v-model="name"  :rules="nameRules" label="Nombre" required ></v-text-field>
+              <v-text-field
+                v-model="user.name"
+                :rules="nameRules"
+                label="Nombre"
+                required
+              ></v-text-field>
             </v-col>
             <v-col>
-                <v-text-field v-model="name"  :rules="nameRules" label="Apellido" required ></v-text-field>
+              <v-text-field
+                v-model="user.lastname"
+                :rules="nameRules"
+                label="Apellido"
+                required
+              ></v-text-field>
             </v-col>
-        </v-row>
+          </v-row>
 
-         <v-row>
+          <v-row>
             <v-col>
-                 <v-text-field v-model="name"  :rules="nameRules" label="Email" required ></v-text-field>
+              <v-text-field
+                v-model="user.email"
+                :rules="nameRules"
+                label="Email"
+                required
+              ></v-text-field>
             </v-col>
             <v-col>
-                <v-text-field v-model="name"  :rules="nameRules" label="Contraseña" required ></v-text-field>
+              <v-text-field
+                v-model="user.password"
+                :rules="nameRules"
+                label="Contraseña"
+                required
+              ></v-text-field>
             </v-col>
-        </v-row>  
-      
-      <v-row >
-          <v-col >
-            <v-dialog  ref="dialog" v-model="modal1" :return-value.sync="dateInit" persistent width="290px" >
+          </v-row>
+
+          <v-row>
+            <v-col>
+              <v-dialog
+                ref="dialog"
+                v-model="modal1"
+                :return-value.sync="dateInit"
+                persistent
+                width="290px"
+              >
                 <template v-slot:activator="{ on, attrs }">
-                <v-text-field  v-model="dateInit" label="Seleccionar fecha de inicio"  prepend-icon="mdi-calendar"  readonly v-bind="attrs" v-on="on"></v-text-field>
+                  <v-text-field
+                    v-model="dateInit"
+                    label="Seleccionar fecha de inicio"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
                 </template>
-                <v-date-picker  v-model="dateInit" scrollable locale="es-419" >
-                <v-spacer></v-spacer>
-                <v-btn  text color="primary" @click="modal1 = false">
-                        Cancel
-                </v-btn>
-                <v-btn text color="primary" @click="$refs.dialog.save(dateInit)" >
-                OK
-                </v-btn>
+                <v-date-picker v-model="dateInit" scrollable locale="es-419">
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="modal1 = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.dialog.save(dateInit)"
+                  >
+                    OK
+                  </v-btn>
                 </v-date-picker>
-            </v-dialog>
-        </v-col>
+              </v-dialog>
+            </v-col>
 
-        <v-col > 
-            <v-dialog  ref="dialog" v-model="modal2" :return-value.sync="dateFinal" persistent width="290px" >
+            <v-col>
+              <v-dialog
+                ref="dialog"
+                v-model="modal2"
+                :return-value.sync="dateFinal"
+                persistent
+                width="290px"
+              >
                 <template v-slot:activator="{ on, attrs }">
-                <v-text-field  v-model="dateFinal" label="Seleccionar fecha de final"  prepend-icon="mdi-calendar"  readonly v-bind="attrs" v-on="on"></v-text-field>
+                  <v-text-field
+                    v-model="dateFinal"
+                    label="Seleccionar fecha de final"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
                 </template>
-                <v-date-picker  v-model="dateFinal"  locale="es-419">
-                <v-spacer></v-spacer>
-                <v-btn  text color="primary" @click="modal2 = false">
-                        Cancel
-                </v-btn>
-                <v-btn text color="primary" @click="$refs.dialog.save(dateFinal)" >
-                OK
-                </v-btn>
+                <v-date-picker v-model="dateFinal" locale="es-419">
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="modal2 = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.dialog.save(dateFinal)"
+                  >
+                    OK
+                  </v-btn>
                 </v-date-picker>
-            </v-dialog>
-        </v-col>
-          
-        
-    </v-row>
-    <v-row>
-         <v-col cols="6">
-        <v-subheader>
-          Seleccionar dependencia
-        </v-subheader>
-      </v-col>
+              </v-dialog>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-subheader>
+                Seleccionar dependencia
+              </v-subheader>
+            </v-col>
 
-      <v-col cols="6">
-        <v-select
-          v-model="select"         
-          :items="items"
-          item-text="state"          
-          label="Select"          
-          return-object
-          single-line
-        ></v-select>
+            <v-col cols="6">
+              <v-select
+                v-model="select"
+                :items="items"
+                :hint="`${select.name}, ${select.coor}`"
+                item-text="name"
+                item-value="id"
+                label="Select"
+                return-object
+                single-line
+              ></v-select>
+            </v-col>
+          </v-row>
 
-      </v-col>
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-checkbox v-model="user.active" label="Activar usuario"></v-checkbox>
+            </v-col>
+          </v-row>
 
-    </v-row>     
-
-      <v-row>
-        <v-col cols="12" md="4">
-          <v-checkbox v-model="active" label="Activar usuario"></v-checkbox>
-        </v-col>     
-
-      </v-row>
-
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="submit">
-        Guardar
-      </v-btn>
-    </v-form>
-
-    </div>
-    
-
- </v-container>
+          <v-btn
+            :disabled="!valid"
+            color="success"
+            class="mr-4"
+            @click="createUser"
+          >
+            Guardar
+          </v-btn>
+        </v-form>
+      </div>
+    </v-container>
   </div>
 </template>
 
 <script>
+import { Dependencies } from "../Data/dependencies";
+import { Users } from "../Data/users";
 export default {
-
-data(){
+  data() {
     return {
-        select: { state: 'Dependencia 1' },
-        items: [
-          { state: 'Dependencia 1' },
-          { state: 'Dependencia 2' },
-          { state: 'Dependencia 3' },
-          { state: 'Dependencia 4'},
-          { state: 'Dependencia 5' },
-        ],
-        modal1: false,
-        modal2: false,
-        dateInit: new Date().toISOString().substr(0, 10),
-        dateFinal: new Date().toISOString().substr(0, 10),
-    }
-    }
-}
+      select: {},
+      items: [],
+      id: 0,
+      user: {
+        id: 0,
+        name: "",
+        lastname: "",
+        email: "",
+        dependency: {},
+        password: "",
+        valid_until: "",
+        active: false,
+      },
+      nameRules: [
+        (name) => !!name || "Obligatorio",
+        (name) => name.length > 2 || "El nombre es muy corto",
+      ],
+      user2: {
+
+      },
+      modal1: false,
+      modal2: false,
+      dateInit: new Date().toISOString().substr(0, 10),
+      dateFinal: new Date().toISOString().substr(0, 10),
+    };
+  },
+  created() {
+    this.items = Dependencies;
+  },
+  methods: {
+    refresh() {
+      this.user = {
+        id: 0,
+        name: "",
+        lastname: "",
+        email: "",
+        dependency: {},
+        password: "",
+        valid_until: "",
+        active: false,
+      };
+    },
+    createUser() {
+      if (Users.length != 0) {
+        console.log("Users.length != 0: "+ Users.length)
+        this.id=Users[Users.length - 1].id+1;
+      }
+      this.user.id = this.id;
+      this.user.valid_until=this.dateFinal
+      this.user.dependency=this.select
+      console.log(this.user);
+      Users.push(this.user);
+      this.user2 = Users;
+      this.refresh();
+      this.id = this.id + 1;
+    },
+  }
+
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -144,7 +144,7 @@
             :disabled="!valid"
             color="success"
             class="mr-4"
-            @click="createUser"
+            @click="validateUserCreation"
           >
             Guardar
           </v-btn>
@@ -157,7 +157,8 @@
           outlined
           prominent
           text
-          
+          transition="scale-transition"
+          v-model="fullDependency"
           type="info"
         >Esta dependencia no puede recibir mas miembros</v-alert>
       </div>
@@ -171,6 +172,7 @@ import { Users } from "../Data/users";
 export default {
   data() {
     return {
+      fullDependency: false,
       select: {},
       items: [],
       id: 0,
@@ -179,7 +181,7 @@ export default {
         name: "",
         lastname: "",
         email: "",
-        dependency: {},
+        dependencyId: "",
         password: "",
         valid_until: "",
         active: false,
@@ -200,35 +202,45 @@ export default {
   },
   methods: {
     refresh() {
+      this.select = {}
       this.user = {
         id: 0,
         name: "",
         lastname: "",
         email: "",
-        dependency: {},
+        dependencyId: "",
         password: "",
         valid_until: "",
         active: false,
       };
     },
-    createUser() {
-      if (this.user.dependency.members.length + 1 > this.user.dependency.max) {
+    validateUserCreation() {
+      console.log("started creating user")
+      if (this.select.members.length + 1 > this.select.max) {
+        console.log("user not allowed")
         this.refresh();
+        this.fullDependency=true
+        
       } else {
-        if (Users.length != 0) {
+        this.createUser()
+      }
+    },
+    createUser() {
+      if (Users.length != 0) {
           console.log("Users.length != 0: " + Users.length);
           this.id = Users[Users.length - 1].id + 1;
         }
         this.user.id = this.id;
         this.user.valid_until = this.dateFinal;
-        this.user.dependency = this.select;
+        this.user.dependencyId = this.select.id;
+        this.select.members.push(this.user.dependencyId)
+        Dependencies.splice(this.user.dependencyId,1,this.select)
         console.log(this.user);
         Users.push(this.user);
         this.user2 = Users;
         this.refresh();
         this.id = this.id + 1;
-      }
-    },
+    }
   },
 };
 </script>

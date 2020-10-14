@@ -7,6 +7,7 @@ import User from './components/User'
 import Dependency from './components/Dependency'
 import Users from './components/Users'
 import Dependencies from './components/Dependencies'
+import store from '../src/store'
 
 
 
@@ -46,5 +47,6 @@ const router = new VueRouter({routes})
 new Vue({
   vuetify,
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

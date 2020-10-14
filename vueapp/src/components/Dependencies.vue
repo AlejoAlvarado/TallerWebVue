@@ -7,12 +7,12 @@
         <v-card class="mx-auto" max-width="1000" >
     <v-list>
       <v-list-item-group  v-model="model" mandatory color="indigo">
-        <v-list-item v-for="(item, i) in listDepen" :key="i" >         
+        <v-list-item v-for="(item, i) in dependenciesStore" :key="i" >         
 
-          <v-list-item-content @click="infoDependy(i)" >
+          <v-list-item-content  >
             <v-row class="userList">
                 <v-col class="dependencyitem" >
-                  <v-list-item-title  v-text="item.nombre"  ></v-list-item-title>
+                  <v-list-item-title @click="infoDependy(i)" v-text="item.name"  ></v-list-item-title>
                 </v-col>
               
               <v-col class="btnitems">
@@ -32,7 +32,7 @@
               </v-col> -->
 
                <v-col class="btnitems">
-                <v-btn class="mx-2" fab dark small color="primary" @click="deleteDepen">
+                <v-btn class="mx-2" fab dark small color="primary" @click="deleteDependency(i)">
                   <v-icon dark>
                    mdi-delete
                   </v-icon>
@@ -46,7 +46,7 @@
       <v-dialog   v-model="dialog"    max-width="360px" >
           <v-card scrollable >
             <v-divider></v-divider>
-            <v-card-title>Información de {{selectedDepen.nombre}}</v-card-title>
+            <v-card-title>Información de {{selectedDepen.name}}</v-card-title>
               <v-divider></v-divider>
               <v-spacer></v-spacer>
                <v-card-text >
@@ -68,9 +68,9 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="user in users" :key="user.age">
+                          <tr v-for="user in users" :key="user.id">
                             <td>{{ user.name }}</td>
-                            <td>{{ user.age }}</td>
+                            <td>{{ user.coor }}</td>
                           </tr>
                         </tbody>
                       </template>
@@ -92,12 +92,14 @@
 </template>
 
 <script>
-import {Dependencies} from '../Data/dependencies.js'
+
+import {mapActions} from 'vuex'
 export default {
 
+  
+
    data(){
-     return{
-      listDepen: Dependencies,
+     return{    
       
       model:true,
       dialog:false,
@@ -125,16 +127,22 @@ export default {
      }
     
   },
+  computed:{
+    dependenciesStore(){
+      return this.$store.state.dependencies;
+    }
+  },
   methods:{
     infoDependy(i){      
       this.selectedDepen = this.listDepen[i];     
       this.dialog=true;
       
       
-    },
-    deleteDepen(){
+    },  
+     
+     ...mapActions(['deleteDependency'])
 
-    }
+    
   }
 
 }

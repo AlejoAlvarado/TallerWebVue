@@ -1,7 +1,18 @@
 <template>
   <v-container>
     <div class="form-wrapper">
-      <v-form ref="form" v-model="valid" lazy-validation>
+       <v-form ref="form" v-model="valid" lazy-validation v-if="editDepen.name !== ' '">
+         <v-text-field
+          v-model="dependency.name"
+          :rules="nameRules"
+          label="Nombre"
+          required
+        ></v-text-field>      
+        <h2>CORRECTO</h2>
+        <h3>{{editDepen.name}}</h3>
+       </v-form> 
+      <div v-else >
+          <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="dependency.name"
           :rules="nameRules"
@@ -51,6 +62,9 @@
           Guardar
         </v-btn>
       </v-form>
+
+      </div>
+    
     </div>
   </v-container>
 </template>
@@ -59,6 +73,7 @@
 import { Dependencies } from "../Data/dependencies";
 
 export default {
+  
   data() {
     return {
       id: 0,
@@ -72,6 +87,8 @@ export default {
         members:[]
       },
       dependency2: {},
+      valid:false,
+     
 
       nameRules: [
         (name) => !!name || "Obligatorio",
@@ -105,6 +122,8 @@ export default {
       this.id = this.id + 1;
     },
   },
+  
+  
 };
 </script>
 

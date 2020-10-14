@@ -8,9 +8,18 @@ Vue.use(Vuex);
 import {Dependencies} from './Data/dependencies.js'
 export default new Vuex.Store({
     state:{
-        dependencies: Dependencies,       
+        dependencies: Dependencies,
+        editDepen:{
+            id: 0,
+              name: " ",
+              coor: " ",
+              location: " ",
+              max: 0,
+              active: false,
+          },       
     },
     mutations:{
+
         deleteDependency(state, payload){            
             state.dependencies.splice(payload,1)
         },
@@ -22,5 +31,10 @@ export default new Vuex.Store({
                 commit('deleteDependency',payload)
 
             },
+    },
+    getters:{
+        editDependency(state){
+            return state.editDepen
+        }
     }
 })

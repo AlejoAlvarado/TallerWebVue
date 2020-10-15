@@ -114,6 +114,7 @@
 <script>
 import { Dependencies } from "../Data/dependencies";
 import {mapActions} from 'vuex'
+import { dependenciesCollection } from "../firebase"
 export default {
   
   data() {
@@ -168,7 +169,9 @@ export default {
       this.dependency.id = this.id;
       console.log(this.dependency);
       Dependencies.push(this.dependency);
+      dependenciesCollection.add(this.dependency)
       this.dependency2 = Dependencies;
+      console.log(dependenciesCollection)
       this.refresh();
       this.id = this.id + 1;
     },

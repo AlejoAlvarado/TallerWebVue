@@ -8,6 +8,7 @@ import Dependency from './components/Dependency'
 import Users from './components/Users'
 import Dependencies from './components/Dependencies'
 import store from '../src/store'
+import { firestorePlugin } from 'vuefire'
 
 
 
@@ -43,6 +44,7 @@ const routes =[
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
+Vue.use(firestorePlugin)
 const router = new VueRouter({routes})
 new Vue({
   vuetify,

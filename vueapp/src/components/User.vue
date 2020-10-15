@@ -169,6 +169,7 @@
 <script>
 import { Dependencies } from "../Data/dependencies";
 import { Users } from "../Data/users";
+//import { db } from "../firebase"
 export default {
   data() {
     return {
@@ -199,6 +200,7 @@ export default {
   },
   created() {
     this.items = Dependencies;
+    
   },
   methods: {
     refresh() {

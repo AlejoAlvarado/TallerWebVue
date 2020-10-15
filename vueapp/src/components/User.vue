@@ -194,6 +194,7 @@ export default {
       user2: {},
       modal1: false,
       modal2: false,
+      valid:false,
       dateInit: new Date().toISOString().substr(0, 10),
       dateFinal: new Date().toISOString().substr(0, 10),
     };

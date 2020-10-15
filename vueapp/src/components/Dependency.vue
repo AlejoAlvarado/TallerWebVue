@@ -1,7 +1,60 @@
 <template>
   <v-container>
     <div class="form-wrapper">
-      <v-form ref="form" v-model="valid" lazy-validation>
+       <v-form ref="form" v-model="valid" lazy-validation v-if="editDep.name !== ' '">
+         <v-text-field
+          v-model="editDep.name"
+          :rules="nameRules"
+          label="Nombre"
+          required
+          
+        ></v-text-field>
+
+        <v-text-field
+          v-model="editDep.coor"
+          :rules="coorRules"
+          label="Coordinador"
+          required
+        >Bienvenido</v-text-field>
+
+        <v-text-field
+          v-model="editDep.location"
+          :rules="locationRules"
+          label="Ubicación"
+          required
+        ></v-text-field>
+
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-checkbox
+              v-model="editDep.active"
+              label="Activar dependencia"
+            ></v-checkbox>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <v-slider
+              v-model="editDep.max"
+              max="20"
+              label="Numero maximo de usuarios"
+              thumb-label
+            >
+            </v-slider>
+          </v-col>
+        </v-row>
+
+        <v-btn
+          :disabled="!valid"
+          color="success"
+          class="mr-4"
+          @click="sendChanges(editDep)"
+          to="/dependencies"
+        >
+          Guardar
+        </v-btn>
+       </v-form> 
+      <div v-else >
+       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="dependency.name"
           :rules="nameRules"
@@ -51,14 +104,18 @@
           Guardar
         </v-btn>
       </v-form>
+
+      </div>
+    
     </div>
   </v-container>
 </template>
 
 <script>
 import { Dependencies } from "../Data/dependencies";
-
+import {mapActions} from 'vuex'
 export default {
+  
   data() {
     return {
       id: 0,
@@ -72,6 +129,9 @@ export default {
         members:[]
       },
       dependency2: {},
+      valid:false,
+      editDep:this.$store.getters.editDepen,
+     
 
       nameRules: [
         (name) => !!name || "Obligatorio",
@@ -80,6 +140,14 @@ export default {
       coorRules: [],
       locationRules: [],
     };
+  },
+  computed:{
+     editDependency(){
+       //console.log("Entre",this.$store.getters.editDepen.name)       
+      return this.$store.getters.editDepen;
+      
+    }
+
   },
   methods: {
     refresh() {
@@ -104,7 +172,11 @@ export default {
       this.refresh();
       this.id = this.id + 1;
     },
+    ...mapActions(['sendChanges'])
+    
   },
+  
+  
 };
 </script>
 

@@ -6,6 +6,7 @@
 
         <v-card class="mx-auto" max-width="1000" >
     <v-list>
+      
       <v-list-item-group  v-model="model" mandatory color="indigo">
         <v-list-item v-for="(item, i) in dependenciesStore" :key="i" >         
 
@@ -16,7 +17,7 @@
                 </v-col>
              
               <v-col class="btnitems">
-                <v-btn  @click="edit(i)"  class="mx-2" fab dark small color="primary"  >
+                <v-btn  @click="editDependency(i)"  class="mx-2" fab dark small color="primary"  >
                   
                   <v-icon dark>
                     mdi-pencil
@@ -112,15 +113,7 @@ export default {
       
       model:true,
       dialog:false,
-      selectedDepen:"" ,
-      editDependency:{
-          id: 0,
-          name: " ",
-          coor: " ",
-          location: " ",
-          max: 0,
-          active: false,
-      } ,
+      selectedDepen:"" ,     
       usersDepen: "",
       users: [
           {
@@ -148,7 +141,8 @@ export default {
   computed:{
     dependenciesStore(){
       return this.$store.state.dependencies;
-    }
+    },
+   
   },
   methods:{
     infoDependy(i){      
@@ -157,17 +151,10 @@ export default {
       this.dialog=true;
       
       
-    },
-    edit(i){
-          
-      this.editDependency = this.$store.state.dependencies[i];
-      //this.$dispatch('edit_depenedency', this.editDependency);
-           
-       console.log(this.editDependency.name)
-
-    }, 
+    },    
      
-     ...mapActions(['deleteDependency'])
+     ...mapActions(['deleteDependency']),
+     ...mapActions(['editDependency']),
 
     
   }

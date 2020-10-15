@@ -47,7 +47,7 @@
           :disabled="!valid"
           color="success"
           class="mr-4"
-          @click="sendChanges(editDep)"
+          @click.capture="sendChangesDepen(editDep)"
           to="/dependencies"
         >
           Guardar
@@ -172,7 +172,7 @@ export default {
       this.refresh();
       this.id = this.id + 1;
     },
-    ...mapActions(['sendChanges'])
+    ...mapActions(['sendChangesDepen'])
     
   },
   

@@ -1,14 +1,16 @@
 
 import Vue from "vue";
+
 import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-
 import {Dependencies} from './Data/dependencies.js'
+import {Users} from './Data/users.js'
 export default new Vuex.Store({
     state:{
         dependencies: Dependencies,
+        users:Users ,
         editDepen:{
             id: 0,
               name: " ",
@@ -16,6 +18,16 @@ export default new Vuex.Store({
               location: " ",
               max: 0,
               active: false,
+          }, 
+          editUse:{
+            id: 0,
+            name: "",
+            lastname: "",
+            email: "",
+            dependencyId: "",
+            password: "",
+            valid_until: "",
+            active: false,
           },       
     },
     mutations:{
@@ -23,12 +35,13 @@ export default new Vuex.Store({
         deleteDependency(state, payload){            
             state.dependencies.splice(payload,1)
         },
-        editDependency(state, payload){         
+        editDependency(state, payload){
+                   
             state.editDepen= state.dependencies[payload];
             console.log("Store", state.editDepen.name)
         },
-        sendChanges(state, payload){                  
-           let newedit = state.dependencies.find(depen => depen.name === payload.id)
+        sendChangesDepen(state, payload){                  
+           let newedit = state.dependencies.find(depen => depen.id === payload.id)
             let localdep = state.dependencies.indexOf(newedit);
             state.dependencies[localdep] = payload;
             state.editDepen = {
@@ -39,11 +52,34 @@ export default new Vuex.Store({
                   max: 0,
                   active: false,
               }
+        },
+        editUser(state, payload){            
+            state.editUse = state.users[payload]
+            console.log("Store init", state.editUse.name)
 
-
-
-
-        }
+        },
+        deleteUser(state , payload){
+            state.users.splice(payload,1);
+        },
+        sendChangesUser(state, payload){          
+                   
+            let newedit = state.users.find(editu => editu.id === payload.id)
+             let localuser = state.users.indexOf(newedit);
+             console.log("Store update before", state.editUse.name)
+             state.users[localuser] = payload;
+             state.editUse = {
+                id: 0,
+                name: "",
+                lastname: "",
+                email: "",
+                dependencyId: "",
+                password: "",
+                valid_until: "",
+                active: false,
+               }
+               console.log("Store update after", state.editUse.name)
+               
+         },
 
     },
     actions:{
@@ -55,13 +91,27 @@ export default new Vuex.Store({
             editDependency({commit}, payload){
                 commit('editDependency',payload)
             },
-            sendChanges({commit},payload){
-                commit('sendChanges',payload)
+            sendChangesDepen({commit},payload){
+                commit('sendChangesDepen',payload)
+            },
+            deleteUser({commit},payload){
+                //console.log(this.state.dependencies[payload].name)
+                commit('deleteUser',payload)
+
+            },
+            editUser({commit}, payload){
+                commit('editUser',payload)
+            },
+            sendChangesUser({commit},payload){
+                commit('sendChangesUser',payload)
             }
     },
     getters:{
         editDepen(state){
             return state.editDepen
-        }
+        },
+        editUse(state){
+            return state.editUse
+        },
     }
 })

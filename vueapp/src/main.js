@@ -20,12 +20,14 @@ const routes =[
   },
   {
     path: '/user',
-    component: User,   
+    component: User,
+    alias: '/edituser'   
 
   },
   {
     path: '/dependency',
-    component: Dependency,   
+    component: Dependency,
+    alias:"/editdepenency"   
 
   },
   {

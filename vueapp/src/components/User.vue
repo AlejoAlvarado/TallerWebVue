@@ -2,7 +2,106 @@
   <div>
     <v-container>
       <div class="form-wrapper">
-        <v-form ref="form" v-model="valid" lazy-validation>
+         <v-form ref="form" v-model="valid"  v-if="editus.name !==''">
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="editus.name"
+                :rules="nameRules"
+                label="Nombre"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="editus.lastname"
+                :rules="nameRules"
+                label="Apellido"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="editus.email"
+                :rules="nameRules"
+                label="Email"
+                required
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="editus.password"
+                :rules="nameRules"
+                label="Contraseña"
+                required
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            
+
+            <v-col>
+              <v-dialog
+                ref="dialog"
+                v-model="modal2"
+                :return-value.sync="dateFinal"
+                persistent
+                width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="editus.valid_until"
+                    label="Seleccionar fecha de final"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="dateFinal" locale="es-419">
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="modal2 = false">
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.dialog.save(dateFinal)"
+                  >
+                    OK
+                  </v-btn>
+                </v-date-picker>
+              </v-dialog>
+            </v-col>
+          </v-row>       
+
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-checkbox
+                v-model="editus.active"
+                label="Activar usuario"
+              ></v-checkbox>
+            </v-col>
+          </v-row>
+
+          <v-btn
+            :disabled="!valid"
+            color="success"
+            class="mr-4"
+            @click.capture="sendChangesUser(editus)"
+            to="/users"       
+          >
+            Guardar
+          </v-btn>
+        </v-form>
+
+
+
+        <div v-else>
+          <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col>
               <v-text-field
@@ -149,6 +248,8 @@
             Guardar
           </v-btn>
         </v-form>
+        </div>
+        
         <v-alert
           border="left"
           color="orange"
@@ -169,10 +270,11 @@
 <script>
 import { Dependencies } from "../Data/dependencies";
 import { Users } from "../Data/users";
+import {mapActions} from 'vuex'
 export default {
   data() {
     return {
-      fullDependency: false,
+      fullDependency: false,      
       select: {},
       items: [],
       id: 0,
@@ -186,6 +288,7 @@ export default {
         valid_until: "",
         active: false,
       },
+      
       nameRules: [
         (name) => !!name || "Obligatorio",
         (name) => name.length > 2 || "El nombre es muy corto",
@@ -194,6 +297,7 @@ export default {
       modal1: false,
       modal2: false,
       valid:false,
+      editus: this.$store.getters.editUse,
       dateInit: new Date().toISOString().substr(0, 10),
       dateFinal: new Date().toISOString().substr(0, 10),
     };
@@ -213,7 +317,7 @@ export default {
         password: "",
         valid_until: "",
         active: false,
-      };
+      }
     },
     validateUserCreation() {
       console.log("started creating user")
@@ -241,8 +345,16 @@ export default {
         this.user2 = Users;
         this.refresh();
         this.id = this.id + 1;
-    }
+    },
+     ...mapActions(['sendChangesUser']),
   },
+  computed:{
+    editUse(){
+      return this.$store.state.editUse
+    }
+    
+  }
+ 
 };
 </script>
 

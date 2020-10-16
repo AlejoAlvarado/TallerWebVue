@@ -17,7 +17,7 @@
                 </v-col>
              
               <v-col class="btnitems">
-                <v-btn  @click="editDependency(i)"  class="mx-2" fab dark small color="primary"  >
+                <v-btn  @click.capture="editDependency(i)" to="/editdepenency"  class="mx-2" fab dark small color="primary"  >
                   
                   <v-icon dark>
                     mdi-pencil

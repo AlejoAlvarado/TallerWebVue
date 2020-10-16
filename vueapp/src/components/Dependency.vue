@@ -52,7 +52,7 @@
           :disabled="!valid"
           color="success"
           class="mr-4"
-          @click="sendChanges(editDep)"
+          @click.capture="sendChangesDepen(editDep)"
           to="/dependencies"
         >
           Guardar
@@ -164,7 +164,8 @@ export default {
       console.log(dependenciesCollection);
       this.refresh();
     },
-    ...mapActions(["sendChanges"]),
+    ...mapActions(['sendChangesDepen'])
+    
   },
 };
 </script>

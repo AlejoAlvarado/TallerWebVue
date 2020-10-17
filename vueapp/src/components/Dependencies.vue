@@ -2,7 +2,7 @@
    <v-container >
    <div class= "form-wrapper">
        <h2>Lista de Dependencias</h2>
-        
+       
 
         <v-card class="mx-auto" max-width="1000" >
     <v-list>
@@ -115,31 +115,12 @@ export default {
       dialog:false,
       selectedDepen:"" ,     
       usersDepen: "",
-      users: [
-          {
-            name: 'User 1',
-            age: 25,
-          },
-          {
-            name: 'User 2',
-            age: 37,
-          },
-          {
-            name: 'User 3',
-            age: 34,
-          },
-          {
-            name: 'User 4',
-            age: 3,
-          },
-          
-      ],
-
      }
     
   },
   computed:{
     dependenciesStore(){
+       
       return this.$store.state.dependencies;
     },
    
@@ -155,9 +136,10 @@ export default {
      
      ...mapActions(['deleteDependency']),
      ...mapActions(['editDependency']),
-
-    
-  }
+     
+     
+  } 
+  
 
 }
 </script>
@@ -170,7 +152,7 @@ export default {
   height: 50px;
 }
 .dependencyitem{
-  margin-right: 500px;
+  margin-right: 400px;
 }
 .btnitems{
     margin-left: 0px;

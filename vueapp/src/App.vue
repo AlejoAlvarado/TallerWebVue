@@ -30,15 +30,8 @@
       </div>
 
       <v-footer  >
-        <v-card flat tile width="100%" class="black text-center">
-          <v-card-text>
-            <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
-              <v-icon size="24px">
-                {{ icon }}
-              </v-icon>
-            </v-btn>
-          </v-card-text>
-          <v-divider></v-divider>
+        <v-card flat tile width="100%" class="black text-center">         
+          
           <v-card-text class="white--text">
             {{ new Date().getFullYear() }} —
             <strong>Alejandro Alvarado - Laura Rubio</strong>
@@ -50,15 +43,24 @@
 </template>
 
 <script>
+import { db } from "./firebase";
 export default {
   name: "App",
 
   components: {},
+  
+  created(){
+     // console.log("works")
+      db.collection("Dependencies").get().then((doc) => 
+        {doc.forEach(item => this.$store.state.dependencies.push(item.data()) )
+            });
 
-  data: () => ({
-    icons: ["mdi-home", "mdi-email", "mdi-calendar", "mdi-delete"],
-    //
-  }),
+      db.collection("Users").get().then((doc) => 
+        {doc.forEach(item => this.$store.state.users.push(item.data()) )
+            })
+            
+  },
+  
 };
 </script>
 <style lang="scss">

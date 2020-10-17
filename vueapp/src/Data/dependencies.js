@@ -7,17 +7,7 @@ export const Dependencies = [
         location: "Zona nueva",
         max: 10,
         active: true,
-        members: [
-            {
-                id:1,
-                name: 'pedro',               
-
-            },
-            {
-                id:2,
-                name:'Juan'
-            }
-        ]
+        
     },
 
     {

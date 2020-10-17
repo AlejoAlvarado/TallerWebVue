@@ -5,12 +5,14 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-import {Dependencies} from './Data/dependencies.js'
-import {Users} from './Data/users.js'
+//import {Dependencies} from './Data/dependencies.js'
+import { db } from "./firebase";
 export default new Vuex.Store({
     state:{
-        dependencies: Dependencies,
-        users:Users ,
+        dependencies: [],
+        users:[] ,
+        status: true,
+        refresh:true,
         editDepen:{
             id: 0,
               name: " ",
@@ -28,17 +30,57 @@ export default new Vuex.Store({
             password: "",
             valid_until: "",
             active: false,
-          },       
+          },
+             
     },
-    mutations:{
+    
+    mutations:{       
 
-        deleteDependency(state, payload){            
-            state.dependencies.splice(payload,1)
-        },
+        deleteDependency(state, payload){
+            let del = state.dependencies[payload];         
+            
+             db.collection('Dependencies').get().then(doc => {
+                 doc.forEach(depen => {
+                   
+                     if(depen.data().name === del.name){
+                      let id =  db.collection('Dependencies').doc(depen.id).id
+                      //console.log("spuesto id",id)
+                        
+                      state.users.find(user =>{
+                        if(user.dependencyId === id){
+                            state.status = false;           
+                        }
+                    })
+                        if(state.status){
+                            
+                            db.collection('Dependencies').doc(depen.id).delete();
+                        }else{
+                            
+                            state.status= true;
+                        }
+                    }
+                 })
+             })
+             state.dependencies.splice(payload,1)       
+
+
+        },       
+
         editDependency(state, payload){
+
+            let del = state.dependencies[payload];             
+             db.collection('Dependencies').get().then(doc => {
+                 doc.forEach(depen => {
+                   
+                     if(depen.data().name === del.name){
+                        console.log(del.name)
+                        db.collection('Dependencies').doc(depen.id).update(del);
+                    }
+                 })
+             })
                    
             state.editDepen= state.dependencies[payload];
-            console.log("Store", state.editDepen.name)
+            //console.log("Store", state.editDepen.name)
         },
         sendChangesDepen(state, payload){                  
            let newedit = state.dependencies.find(depen => depen.id === payload.id)
@@ -53,13 +95,34 @@ export default new Vuex.Store({
                   active: false,
               }
         },
-        editUser(state, payload){            
+        editUser(state, payload){  
+            let del = state.users[payload];             
+            db.collection('Users').get().then(doc => {
+                doc.forEach(depen => {
+                  
+                    if(depen.data().name === del.name){
+                       console.log(del.name)
+                       db.collection('Users').doc(depen.id).update(del);
+                   }
+                })
+            })          
             state.editUse = state.users[payload]
-            console.log("Store init", state.editUse.name)
+            //console.log("Store init", state.editUse.name)
 
         },
         deleteUser(state , payload){
-            state.users.splice(payload,1);
+            let del = state.users[payload];  
+            
+             db.collection('Users').get().then(doc => {
+                 doc.forEach(depen => {
+                   
+                     if(depen.data().name === del.name){
+                        //console.log(del.name)
+                        db.collection('Users').doc(depen.id).delete();
+                    }
+                 })
+             })
+             state.users.splice(payload,1)
         },
         sendChangesUser(state, payload){          
                    
@@ -80,6 +143,9 @@ export default new Vuex.Store({
                console.log("Store update after", state.editUse.name)
                
          },
+         refreshView(state){
+             state.refresh = true;
+         }
 
     },
     actions:{
@@ -104,7 +170,11 @@ export default new Vuex.Store({
             },
             sendChangesUser({commit},payload){
                 commit('sendChangesUser',payload)
+            },
+            refreshView({commit}){
+                commit('refreshView')
             }
+            
     },
     getters:{
         editDepen(state){
@@ -113,5 +183,6 @@ export default new Vuex.Store({
         editUse(state){
             return state.editUse
         },
+        
     }
 })

@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 //import {Dependencies} from './Data/dependencies.js'
 import { db } from "./firebase";
-import { dependenciesCollection } from "./firebase"
+import { dependenciesCollection } from "./firebase";
+import { usersCollection } from "./firebase";
 export default new Vuex.Store({
   state: {
     dependencies: [],
@@ -36,8 +37,13 @@ export default new Vuex.Store({
 
   mutations: {
     createDependency(state, payload) {
-        dependenciesCollection.add(payload);
-        state.dependencies.push(payload)
+      dependenciesCollection.add(payload);
+      state.dependencies.push(payload);
+    },
+    updateMembers(state, payload) {
+      let dependencyId = payload[0]
+      dependenciesCollection.doc(dependencyId).update({members: payload[1]});
+      
     },
     deleteDependency(state, payload) {
       let del = state.dependencies[payload];
@@ -99,6 +105,10 @@ export default new Vuex.Store({
         active: false,
       };
     },
+    createUser(state, payload) {
+      usersCollection.add(payload);
+      state.users.push(payload);
+    },
     editUser(state, payload) {
       let del = state.users[payload];
       db.collection("Users")
@@ -156,7 +166,10 @@ export default new Vuex.Store({
   },
   actions: {
     createDependency({ commit }, payload) {
-        commit("createDependency", payload)
+      commit("createDependency", payload);
+    },
+    updateMembers({ commit }, payload) {
+      commit("updateMembers", payload);
     },
     deleteDependency({ commit }, payload) {
       //console.log(this.state.dependencies[payload].name)
@@ -167,6 +180,9 @@ export default new Vuex.Store({
     },
     sendChangesDepen({ commit }, payload) {
       commit("sendChangesDepen", payload);
+    },
+    createUser({ commit }, payload) {
+      commit("createUser", payload);
     },
     deleteUser({ commit }, payload) {
       //console.log(this.state.dependencies[payload].name)

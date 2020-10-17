@@ -271,9 +271,9 @@
 <script>
 
 import { db } from "../firebase";
-import { usersCollection } from "../firebase";
-import { dependenciesCollection } from "../firebase";
-//import {mapActions} from 'vuex'
+//import { usersCollection } from "../firebase";
+//import { dependenciesCollection } from "../firebase";
+import {mapActions} from 'vuex'
 export default {
   data() {
     return {
@@ -314,6 +314,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["createUser","updateMembers"]),
     refresh() {
       this.select = {};
       this.user = {
@@ -333,10 +334,10 @@ export default {
         this.refresh();
         this.fullDependency = true;
       } else {
-        this.createUser();
+        this.addUser();
       }
     },
-    createUser() {
+    addUser() {
       
       this.user.valid_until = this.dateFinal;
       this.user.dependencyId = this.select.id;
@@ -344,8 +345,10 @@ export default {
       console.log(this.user);
       
       console.log(this.select)
-      usersCollection.add(this.user)      
-      dependenciesCollection.doc(this.user.dependencyId).update({members: this.select.members+1})
+      this.createUser(this.user)
+      var payload=[this.user.dependencyId,this.select.members+1]     
+      this.updateMembers(payload)
+      //dependenciesCollection.doc(this.user.dependencyId).update({members: this.select.members+1})
 
       this.refresh();
     }

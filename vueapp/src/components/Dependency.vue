@@ -4,7 +4,6 @@
       <v-form
         ref="form"
         v-model="valid"
-        lazy-validation
         v-if="editDep.name !== ' '"
       >
         <v-text-field
@@ -59,7 +58,7 @@
         </v-btn>
       </v-form>
       <div v-else>
-        <v-form ref="form" v-model="valid" lazy-validation>
+        <v-form ref="form" v-model="valid" >
           <v-text-field
             v-model="dependency.name"
             :rules="nameRules"
@@ -109,6 +108,19 @@
             Guardar
           </v-btn>
         </v-form>
+        <v-alert
+          border="left"
+          color="green"
+          dense
+          dismissible
+          outlined
+          prominent
+          text
+          transition="scale-transition"
+          v-model="successfullDependency"
+          type="success"
+          >El registro de la dependencia fue existoso!</v-alert
+        >
       </div>
     </div>
   </v-container>
@@ -121,6 +133,7 @@ export default {
   data() {
     return {
       id: 0,
+      successfullDependency: false,
       dependency: {
         name: " ",
         coor: " ",
@@ -130,15 +143,21 @@ export default {
         members: 0,
       },
       dependency2: {},
-      valid: false,
+      valid: true,
       editDep: this.$store.getters.editDepen,
 
       nameRules: [
         (name) => !!name || "Obligatorio",
         (name) => name.length > 2 || "El nombre es muy corto",
       ],
-      coorRules: [],
-      locationRules: [],
+      coorRules: [
+        (coor) => !!coor || "Obligatorio",
+        (coor) => coor.length > 2 || "El nombre del coordinador es muy corto",
+      ],
+      locationRules: [
+        (location) => !!location || "Obligatorio",
+        (location) => location.length > 2 || "La ubicación es muy corta",
+      ],
     };
   },
   computed: {
@@ -164,8 +183,8 @@ export default {
 
       console.log(dependenciesCollection);
       this.refresh();
+      this.successfullDependency=true
     },
-    
   },
 };
 </script>

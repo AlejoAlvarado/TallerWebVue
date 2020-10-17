@@ -26,7 +26,7 @@
             <v-col>
               <v-text-field
                 v-model="editus.email"
-                :rules="nameRules"
+                :rules="emailRules"
                 label="Email"
                 required
               ></v-text-field>
@@ -34,7 +34,7 @@
             <v-col>
               <v-text-field
                 v-model="editus.password"
-                :rules="nameRules"
+                :rules="passwordRules"
                 label="Contraseña"
                 required
               ></v-text-field>
@@ -57,11 +57,12 @@
                     label="Seleccionar fecha de final"
                     prepend-icon="mdi-calendar"
                     readonly
+                    :rules="dateRules"
                     v-bind="attrs"
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker v-model="dateFinal" locale="es-419">
+                <v-date-picker v-model="dateFinal" locale="es-419" :rules="dateRules">
                   <v-spacer></v-spacer>
                   <v-btn text color="primary" @click="modal2 = false">
                     Cancel
@@ -101,7 +102,7 @@
 
 
         <div v-else>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="form" v-model="valid">
           <v-row>
             <v-col>
               <v-text-field
@@ -125,7 +126,7 @@
             <v-col>
               <v-text-field
                 v-model="user.email"
-                :rules="nameRules"
+                :rules="emailRules"
                 label="Email"
                 required
               ></v-text-field>
@@ -133,7 +134,7 @@
             <v-col>
               <v-text-field
                 v-model="user.password"
-                :rules="nameRules"
+                :rules="passwordRules"
                 label="Contraseña"
                 required
               ></v-text-field>
@@ -141,39 +142,7 @@
           </v-row>
 
           <v-row>
-            <v-col>
-              <v-dialog
-                ref="dialog"
-                v-model="modal1"
-                :return-value.sync="dateInit"
-                persistent
-                width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="dateInit"
-                    label="Seleccionar fecha de inicio"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker v-model="dateInit" scrollable locale="es-419">
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="modal1 = false">
-                    Cancel
-                  </v-btn>
-                  <v-btn
-                    text
-                    color="primary"
-                    @click="$refs.dialog.save(dateInit)"
-                  >
-                    OK
-                  </v-btn>
-                </v-date-picker>
-              </v-dialog>
-            </v-col>
+           
 
             <v-col>
               <v-dialog
@@ -186,7 +155,8 @@
                 <template v-slot:activator="{ on, attrs }">
                   <v-text-field
                     v-model="dateFinal"
-                    label="Seleccionar fecha de final"
+                    :rules="dateRules"
+                    label="Seleccionar fecha hasta la que se estará en la membresía"
                     prepend-icon="mdi-calendar"
                     readonly
                     v-bind="attrs"
@@ -208,6 +178,9 @@
                 </v-date-picker>
               </v-dialog>
             </v-col>
+            <v-col>
+
+            </v-col>
           </v-row>
           <v-row>
             <v-col cols="6">
@@ -217,14 +190,16 @@
             </v-col>
 
             <v-col cols="6">
+              
               <v-select
                 v-model="select"
+                required
                 :items="items"
                 :hint="`${select.name}, ${select.coor}`"
                 item-text="name"
-                item-value="id"
                 label="Select"
                 return-object
+                :rules="[v => !!v || 'Obligatorio']"
                 single-line
               ></v-select>
             </v-col>
@@ -261,8 +236,39 @@
           transition="scale-transition"
           v-model="fullDependency"
           type="info"
-          >Esta dependencia no puede recibir mas miembros</v-alert
+          >Esta dependencia no puede recibir mas miembros. <br>
+          Seleccione una dependencia que tenga espacio para recibir mas miembros.</v-alert
         >
+
+        <v-alert
+          border="left"
+          color="orange"
+          dense
+          dismissible
+          outlined
+          prominent
+          text
+          transition="scale-transition"
+          v-model="selectEmpty"
+          type="info"
+          >Seleccione una dependencia para poder crear un usuario.</v-alert
+        >
+        
+        <v-alert
+          border="left"
+          color="green"
+          dense
+          dismissible
+          outlined
+          prominent
+          text
+          transition="scale-transition"
+          v-model="successfullUser"
+          type="success"
+          >El registro del usuario fue existoso!</v-alert
+        >
+        
+        
       </div>
     </v-container>
   </div>
@@ -277,7 +283,10 @@ import {mapActions} from 'vuex'
 export default {
   data() {
     return {
-      fullDependency: false,      
+      fullDependency: false,
+      successfullUser: false,  
+      inactiveDependency: false,    
+      selectEmpty: false,
       select: {},
       items: [],
       items2: [],
@@ -296,10 +305,28 @@ export default {
         (name) => !!name || "Obligatorio",
         (name) => name.length > 2 || "El nombre es muy corto",
       ],
+      lastnameRules: [
+        (lastname) => !!lastname || "Obligatorio",
+        (lastname) => lastname.length > 2 || "El apellido es muy corto",
+      ],
+      emailRules: [
+        (email) => !!email || "Obligatorio",
+        (email) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email) ||
+          "Email no valido",
+      ],
+      passwordRules: [
+        (password) => !!password || "Obligatorio",
+      ],
+      dateRules: [
+        (date) => !!date || "Obligatorio",
+      ],
+      dependencyRules: [
+        (dependency) => !!dependency || "Obligatorio",
+      ],
       user2: {},
       modal1: false,
       modal2: false,
-      valid:false,
+      valid:true,
       editus: this.$store.getters.editUse,
       dateInit: new Date().toISOString().substr(0, 10),
       dateFinal: new Date().toISOString().substr(0, 10),
@@ -310,7 +337,7 @@ export default {
   },
   firestore() {
     return {
-      items: db.collection("Dependencies"),
+      items: db.collection("Dependencies").where('active','==',true),
     };
   },
   methods: {
@@ -328,13 +355,19 @@ export default {
       }
     },
     validateUserCreation() {
+      
+      
       console.log("started creating user");
-      if (this.select.members+1 > this.select.max) {
+      
+      if(Object.entries(this.select).length===0){
+        this.selectEmpty=true
+      }
+      else if (this.select.members+1 > this.select.max) {
         console.log("user not allowed");
-        this.refresh();
         this.fullDependency = true;
       } else {
         this.addUser();
+        this.successfullUser = true
       }
     },
     addUser() {

@@ -104,7 +104,7 @@
             :disabled="!valid"
             color="success"
             class="mr-4"
-            @click="createDepency"
+            @click="createDep"
           >
             Guardar
           </v-btn>
@@ -115,7 +115,6 @@
 </template>
 
 <script>
-
 import { mapActions } from "vuex";
 import { dependenciesCollection } from "../firebase";
 export default {
@@ -128,7 +127,7 @@ export default {
         location: " ",
         max: 0,
         active: false,
-        members:0
+        members: 0,
       },
       dependency2: {},
       valid: false,
@@ -149,6 +148,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["sendChangesDepen", "createDependency"]),
     refresh() {
       this.dependency = {
         name: " ",
@@ -156,15 +156,15 @@ export default {
         location: " ",
         max: 0,
         active: false,
-        members:0
+        members: 0,
       };
     },
-    createDepency() {
-      dependenciesCollection.add(this.dependency);
+    createDep() {
+      this.createDependency(this.dependency);
+
       console.log(dependenciesCollection);
       this.refresh();
     },
-    ...mapActions(['sendChangesDepen'])
     
   },
 };

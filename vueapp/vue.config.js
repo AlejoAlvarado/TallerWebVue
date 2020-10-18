@@ -1,5 +1,6 @@
 module.exports = {
-  publicPath: '/vueapp/',
+  
+  publicPath: '/TallerWebVue/',
   "transpileDependencies": [
     "vuetify"
   ]

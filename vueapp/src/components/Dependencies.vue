@@ -8,7 +8,7 @@
     <v-list>
       
       <v-list-item-group  v-model="model" mandatory color="indigo">
-        <v-list-item v-for="(item, i) in dependencies" :key="i" >         
+        <v-list-item v-for="(item, i) in dependenciesStore" :key="i" >         
 
           <v-list-item-content  >
             <v-row class="userList">
@@ -26,7 +26,7 @@
               </v-col>
 
                <v-col class="btnitems" >
-                <v-btn @click="infoDependy(i)" class="mx-2" fab dark small color="primary" >
+                <v-btn @click="infoDependy(i); searchUserDepen(selectedDepen.name) " class="mx-2" fab dark small color="primary" >
                   <v-icon dark>
                     mdi-eye
                   </v-icon>
@@ -46,20 +46,20 @@
         </v-list-item>
         
       </v-list-item-group>
-      <v-dialog   v-model="dialog"    max-width="360px" >
-          <v-card scrollable >
-            <v-divider></v-divider>
-            <v-card-title>Información de {{selectedDepen.name}}</v-card-title>
+      <v-dialog   v-model="dialog"    max-width="360px"  >
+          <v-card   >
+            <v-divider style="height: 600px;"></v-divider>
+            <v-card-title >Información de {{selectedDepen.name}}</v-card-title>
               <v-divider></v-divider>
               <v-spacer></v-spacer>
               <br>
                <v-card-text >
-                 <strong>La dependencia tiene {{usersDepen.length}} usuarios  </strong>                     
+                 <strong> </strong>                     
                   <p>
                     Ubicacion: {{selectedDepen.location}}<br>
                     Cantidad maxima de usuarios {{selectedDepen.max}}<br>
                     Estado:{{selectedDepen.active}}<br>                    
-                  </p>                                   
+                  </p>                                                   
                 </v-card-text>                             
                  <v-simple-table fixed-header>
                       <template v-slot:default>
@@ -75,9 +75,9 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="user in usersDepen" :key="user.id">
+                          <tr v-for="user in userbydepen" :key="user.name">
                             <td>{{ user.name }}</td>
-                            <td>{{ user.id }}</td>
+                            <td>{{ user.email }}</td>
                           </tr>
                         </tbody>
                       </template>
@@ -110,7 +110,7 @@ export default {
 
    data(){
      return{    
-      dependencies: this.$store.getters.dependencies,
+      
       model:true,
       dialog:false,
       selectedDepen:"" ,     
@@ -122,6 +122,9 @@ export default {
     dependenciesStore(){       
       return this.$store.getters.dependencies;
     },
+    userbydepen(){
+      return this.$store.getters.userbydepen;
+    }
     
    
   },
@@ -132,10 +135,12 @@ export default {
       this.dialog=true;
       
       
+      
     },    
      
      ...mapActions(['deleteDependency']),
      ...mapActions(['editDependency']),
+     ...mapActions(['searchUserDepen'])
      
      
   },

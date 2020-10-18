@@ -35,6 +35,7 @@ export default new Vuex.Store({
     },
     indexuser:"",
     indexdepen:"",
+    userbydepen:[],
   },
 
   mutations: {
@@ -112,15 +113,15 @@ export default new Vuex.Store({
                   name: del.name,
                   max: del.max,
 
-                });
-                
-                let newedit =state.dependencies.find( u => u.name == state.indexdepen);
-                let localdep = state.dependencies.indexOf(newedit);
-                state.dependencies[localdep] = del;                
-                console.log(state.dependencies[localdep].name)
+                });         
+               
             }
           });
-        });       
+        });
+        let newedit =state.dependencies.find( u => u.name == state.indexdepen);
+        let localdep = state.dependencies.indexOf(newedit);
+        state.dependencies[localdep] = del;                
+       
       state.editDepen = {
         id:"",
         name: " ",
@@ -191,15 +192,15 @@ export default new Vuex.Store({
                   lastname: del.lastname,
                   password: del.password,
                 });
-                let newuser = state.users.find( u => u.name == state.indexuser);
-                let user = state.users.indexOf(newuser);
-                state.users[user] = del
-                console.log(state.users[user].name)
+                
                 
             }
           });
         });
-        
+        let newuser = state.users.find( u => u.name == state.indexuser);
+        let user = state.users.indexOf(newuser);
+        state.users[user] = del
+        //console.log(state.users[user].name)
       state.editUse = {
         id: "",
         name: "",
@@ -216,6 +217,28 @@ export default new Vuex.Store({
     refreshView(state) {
       state.refresh = true;
     },
+    searchUserDepen(state,payload){
+      var idDepen = "";  
+      
+      db.collection('Dependencies').get().then(doc =>{
+        doc.forEach(depen =>{
+          if(depen.data().name === payload){           
+            idDepen = depen.id;            
+            state.users.forEach(user => {              
+              if(user.dependencyId === idDepen){
+                state.userbydepen.push(user);                
+              }
+            })
+          }
+        })
+      })
+
+      
+      
+
+      
+
+    }
   },
   actions: {
     createDependency({ commit }, payload) {
@@ -250,6 +273,9 @@ export default new Vuex.Store({
     refreshView({ commit }) {
       commit("refreshView");
     },
+    searchUserDepen({commit},payload){
+      commit("searchUserDepen",payload);
+    }
   },
   getters: {
     editDepen(state) {
@@ -263,6 +289,9 @@ export default new Vuex.Store({
     },
     dependencies: state=>{
       return state.dependencies;
-    }
+    },
+    userbydepen(state){
+      return state.userbydepen;
+    },
   },
 });

@@ -87,7 +87,7 @@ import {mapActions} from 'vuex'
 export default {
   computed:{
     usersore(){
-      return this.$store.state.users;
+      return this.$store.getters.users;
     }
 
   },

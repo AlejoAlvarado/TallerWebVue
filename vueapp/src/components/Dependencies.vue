@@ -8,7 +8,7 @@
     <v-list>
       
       <v-list-item-group  v-model="model" mandatory color="indigo">
-        <v-list-item v-for="(item, i) in dependenciesStore" :key="i" >         
+        <v-list-item v-for="(item, i) in dependencies" :key="i" >         
 
           <v-list-item-content  >
             <v-row class="userList">
@@ -110,7 +110,7 @@ export default {
 
    data(){
      return{    
-      
+      dependencies: this.$store.getters.dependencies,
       model:true,
       dialog:false,
       selectedDepen:"" ,     
@@ -119,10 +119,10 @@ export default {
     
   },
   computed:{
-    dependenciesStore(){
-       
-      return this.$store.state.dependencies;
+    dependenciesStore(){       
+      return this.$store.getters.dependencies;
     },
+    
    
   },
   methods:{
@@ -138,7 +138,9 @@ export default {
      ...mapActions(['editDependency']),
      
      
-  } 
+  },
+  
+ 
   
 
 }

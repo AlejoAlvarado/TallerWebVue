@@ -92,7 +92,7 @@
             :disabled="!valid"
             color="success"
             class="mr-4"
-            @click.capture="sendChangesUser(editus)"
+            @click.capture="sendChangesUser()"
             to="/users"       
           >
             Guardar
@@ -277,6 +277,7 @@
 <script>
 
 import { db } from "../firebase";
+
 //import { usersCollection } from "../firebase";
 //import { dependenciesCollection } from "../firebase";
 import {mapActions} from 'vuex'
@@ -341,7 +342,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createUser","updateMembers"]),
+    ...mapActions(["createUser","updateMembers",'sendChangesUser']),
     refresh() {
       this.select = {};
       this.user = {
@@ -371,7 +372,11 @@ export default {
       }
     },
     addUser() {
-      
+      let md5 = require('js-md5')
+      let pass = md5(this.user.password)
+      console.log(pass)
+      this.user.password = pass;      
+
       this.user.valid_until = this.dateFinal;
       this.user.dependencyId = this.select.id;
 
@@ -388,7 +393,7 @@ export default {
   },
   computed:{
     editUse(){
-      return this.$store.state.editUse
+      return this.$store.getters.editUse;
     }
     
   }

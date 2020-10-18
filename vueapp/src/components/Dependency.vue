@@ -51,7 +51,7 @@
           :disabled="!valid"
           color="success"
           class="mr-4"
-          @click.capture="sendChangesDepen(editDep)"
+          @click.capture="sendChangesDepen()"
           to="/dependencies"
         >
           Guardar

@@ -1,6 +1,10 @@
-<template>
+<template >
   <v-app>
+    
     <main>
+      <v-img  src="https://images.unsplash.com/photo-1490131784822-b4626a8ec96a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1550&q=80">
+
+      
       <div class="app-container">
         <header class="app-header">
           <v-app-bar
@@ -26,19 +30,22 @@
 
         <div class="content">
           <router-view></router-view>
-        </div>
+        </div>    
+
       </div>
 
-      <v-footer  >
-        <v-card flat tile width="100%" class="black text-center">         
-          
-          <v-card-text class="white--text">
-            {{ new Date().getFullYear() }} —
-            <strong>Alejandro Alvarado - Laura Rubio</strong>
-          </v-card-text>
-        </v-card>
-      </v-footer>
+      
+      
+    </v-img>
     </main>
+    <v-footer  :padless="padless" dark v-bind="localAttrs" >
+      <v-card  width="100%"  >      
+      <v-card-text class=" white--text text-center ">
+        {{ new Date().getFullYear() }} — <strong>Alejandro Alvarado - Laura Rubio</strong>
+      </v-card-text>
+    </v-card>
+  </v-footer>
+    
   </v-app>
 </template>
 
@@ -46,8 +53,27 @@
 import { db } from "./firebase";
 export default {
   name: "App",
-
+  data(){
+    return{
+       padless: false,
+      variant: 'default',
+      
+    }
+  },
   components: {},
+  computed:{
+    localAttrs () {
+        const attrs = {}
+
+        if (this.variant === 'default') {
+          attrs.absolute = true
+          attrs.fixed = false
+        } else {
+          attrs[this.variant] = true
+        }
+        return attrs
+      },
+  },
   
   created(){
      // console.log("works")
@@ -66,19 +92,30 @@ export default {
 <style lang="scss">
 .content {
   padding: 15px;
-  margin-top: 15%;
+  margin-top: 18%;
+  margin-bottom: 5%;
+   
+  
+  
 }
 .main {
   padding: 40px;
   font-family: "Roboto", "sans-serif";
-  background: #fff top center repeat;
-  color: #444;
-  background-image: url("https://raw.githubusercontent.com/VueVixens/projects/master/petshop/images/bg.jpg");
+ 
+  
+ 
 }
-
 .app-container {
   max-width: 1040px;
   margin: 0 auto;
-  background-color: #fff;
+  
+  
+}
+.body{
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
+  background-image: url("https://images.unsplash.com/photo-1498962342534-ee08a0bb1d45?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80");
+
 }
 </style>

@@ -19,6 +19,7 @@
                 <v-tab to="/dependency">Dependencias</v-tab>
                 <v-tab to="/users">Lista de usuarios</v-tab>
                 <v-tab to="/dependencies">Lista de dependencias</v-tab>
+                <v-tab to=/searchfilter>Buscar usuarios</v-tab>
               </v-tabs>
             </template>
           </v-app-bar>

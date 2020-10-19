@@ -6,9 +6,6 @@
       </div>
 
       <v-toolbar>
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
         <v-text-field v-model="search" placeholder="Buscar usuarios">
         </v-text-field>
       </v-toolbar>
@@ -109,12 +106,21 @@
     <div class="form-wrapper" v-else>
       <div>
         <h1>Buscar usuarios por dependencia</h1>
+        <h4>
+          Por favor especifique el nombre exacto y luego presione el boton de
+          busqueda.
+        </h4>
       </div>
 
       <v-toolbar>
-        <v-btn icon>
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-on="on" v-bind="attrs" @click="searchUserByDepen">
+              <v-icon>mdi-magnify</v-icon>
+            </v-btn>
+          </template>
+          <span>Buscar</span>
+        </v-tooltip>
         <v-text-field v-model="search" placeholder="Buscar usuarios">
         </v-text-field>
       </v-toolbar>
@@ -127,7 +133,10 @@
       <v-card class="mx-auto" max-width="1000">
         <v-list>
           <v-list-item-group v-model="model" mandatory color="indigo">
-            <v-list-item v-for="(user, i) in filteredUsers" :key="i">
+            <v-list-item
+              v-for="(user, i) in filteredUsersByDependency"
+              :key="i"
+            >
               <v-list-item-content>
                 <v-row class="userList">
                   <v-col class="dependencyitem">
@@ -211,10 +220,6 @@
         </v-list>
       </v-card>
     </div>
-
-    <div v-for="user in filteredUsers" :key="user.id">
-      <h2>{{ user.name }} {{ user.lastname }}</h2>
-    </div>
   </v-container>
 </template>
 
@@ -244,16 +249,12 @@ export default {
       });
     },
     filteredUsersByDependency: function() {
-      return this.users.filter((user) => {
-        var regex = new RegExp(this.search, "gi");
-        return this.search != "" ? user.name.match(regex) : null;
-        //return user.name.match(this.search);
-      });
+      return this.$store.state.userbydepen;
+      //return user.name.match(this.search);
     },
   },
   methods: {
-    ...mapActions(["deleteUser"]),
-    ...mapActions(["editUser"]),
+    ...mapActions(["deleteUser", "searchUserDepen", "editUser"]),
 
     infoUser(i) {
       this.selectedUser = this.$store.state.users[i];
@@ -261,6 +262,11 @@ export default {
     },
     changeFilter() {
       this.filterByUser = !this.filterByUser;
+      this.$store.state.userbydepen = [];
+    },
+    searchUserByDepen() {
+      this.$store.state.userbydepen = [];
+      this.searchUserDepen(this.search);
     },
   },
 };

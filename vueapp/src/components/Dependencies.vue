@@ -11,10 +11,11 @@
         <v-list-item v-for="(item, i) in dependenciesStore" :key="i" >         
 
           <v-list-item-content  >
-            <v-row class="userList">
+            <v-row >
                 <v-col class="dependencyitem" >
                   <v-list-item-title v-text="item.name"  ></v-list-item-title>
                 </v-col>
+            
              
               <v-col class="btnitems">
                 <v-btn  @click.capture="editDependency(i)" to="/editdepenency"  class="mx-2" fab dark small color="primary"  >
@@ -155,9 +156,7 @@ export default {
 .form-wrapper{
     padding: 40px ;
 }
-.userList{
-  height: 50px;
-}
+
 .dependencyitem{
   margin-right: 400px;
 }

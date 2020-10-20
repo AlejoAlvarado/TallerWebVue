@@ -57,8 +57,10 @@
                <v-card-text >
                  <strong> </strong>                     
                   <p>
+                    Coor :  {{selectedDepen.coor}}
                     Ubicacion: {{selectedDepen.location}}<br>
                     Cantidad maxima de usuarios {{selectedDepen.max}}<br>
+                    Usuarios actuales:{{selectedDepen.members}}<br>
                     Estado:{{selectedDepen.active}}<br>                    
                   </p>                                                   
                 </v-card-text>                             

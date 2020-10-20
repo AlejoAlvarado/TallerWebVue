@@ -49,6 +49,7 @@ export default new Vuex.Store({
       
     },
     deleteDependency(state, payload) {
+      
       let del = state.dependencies[payload];
 
       db.collection("Dependencies")
@@ -112,6 +113,7 @@ export default new Vuex.Store({
                   location:del.location,
                   name: del.name,
                   max: del.max,
+                  members: del.members,
 
                 });         
                
@@ -161,11 +163,27 @@ export default new Vuex.Store({
     },
     deleteUser(state, payload) {
       let del = state.users[payload];
+      let idDepen = del.dependencyId;
 
+      db.collection("Dependencies")
+        .get()
+        .then((doc) => {
+          doc.forEach((depen) => {
+            if (depen.id === idDepen) {
+              db.collection("Dependencies")
+              .doc(depen.id)
+              .update({
+               members : depen.data().members -1,
+              });
+
+            }
+          });
+        });
       db.collection("Users")
         .get()
         .then((doc) => {
           doc.forEach((depen) => {
+            
             if (depen.data().name === del.name) {
               //console.log(del.name)
               db.collection("Users")

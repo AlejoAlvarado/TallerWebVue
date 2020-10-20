@@ -47,7 +47,7 @@
         </v-list-item>
         
       </v-list-item-group>
-      <v-dialog   v-model="dialog"    max-width="360px"  >
+      <v-dialog   v-model="dialog"  persistent  max-width="360px"  >
           <v-card   >
             <v-divider style="height: 600px;"></v-divider>
             <v-card-title >Información de {{selectedDepen.name}}</v-card-title>
@@ -71,20 +71,24 @@
                               Usuario
                             </th>
                             <th class="text-left">
-                              id
+                              lastname
+                            </th>
+                            <th class="text-left">
+                              email
                             </th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr v-for="user in userbydepen" :key="user.name">
                             <td>{{ user.name }}</td>
+                            <td>{{ user.lastname }}</td>
                             <td>{{ user.email }}</td>
                           </tr>
                         </tbody>
                       </template>
             </v-simple-table>
                 <v-card-actions>
-                  <v-btn color="blue darken-1" text @click="dialog = false" >
+                  <v-btn color="blue darken-1" text @click="dialog = false ; cleanUsersDepen()" >
                     Close
                   </v-btn>         
             </v-card-actions>
@@ -133,15 +137,14 @@ export default {
     infoDependy(i){      
       this.selectedDepen = this.$store.state.dependencies[i]; 
       this.usersDepen = this.selectedDepen.members;    
-      this.dialog=true;
+      this.dialog=true;     
       
-      
-      
-    },    
+    },   
      
      ...mapActions(['deleteDependency']),
      ...mapActions(['editDependency']),
-     ...mapActions(['searchUserDepen'])
+     ...mapActions(['searchUserDepen']),
+     ...mapActions(['cleanUsersDepen'])
      
      
   },

@@ -231,13 +231,11 @@ export default new Vuex.Store({
             })
           }
         })
-      })
+      })  
 
-      
-      
-
-      
-
+    },
+    cleanUsersDepen(state){
+      state.userbydepen.splice(0,state.userbydepen.length);
     }
   },
   actions: {
@@ -275,7 +273,11 @@ export default new Vuex.Store({
     },
     searchUserDepen({commit},payload){
       commit("searchUserDepen",payload);
-    }
+    },
+    cleanUsersDepen({commit}){
+      commit("cleanUsersDepen")
+
+    },
   },
   getters: {
     editDepen(state) {

@@ -27,23 +27,7 @@
 
                   <v-col class="btnitems">
                     <v-btn
-                      @click.capture="editUser(i)"
-                      to="/edituser"
-                      class="mx-2"
-                      fab
-                      dark
-                      small
-                      color="primary"
-                    >
-                      <v-icon dark>
-                        mdi-pencil
-                      </v-icon>
-                    </v-btn>
-                  </v-col>
-
-                  <v-col class="btnitems">
-                    <v-btn
-                      @click="infoUser(i)"
+                      @click="infoUser(user)"
                       class="mx-2"
                       fab
                       dark
@@ -52,21 +36,6 @@
                     >
                       <v-icon dark>
                         mdi-eye
-                      </v-icon>
-                    </v-btn>
-                  </v-col>
-
-                  <v-col class="btnitems">
-                    <v-btn
-                      class="mx-2"
-                      fab
-                      dark
-                      small
-                      color="primary"
-                      @click="deleteUser(i)"
-                    >
-                      <v-icon dark>
-                        mdi-delete
                       </v-icon>
                     </v-btn>
                   </v-col>
@@ -145,23 +114,7 @@
 
                   <v-col class="btnitems">
                     <v-btn
-                      @click.capture="editUser(i)"
-                      to="/edituser"
-                      class="mx-2"
-                      fab
-                      dark
-                      small
-                      color="primary"
-                    >
-                      <v-icon dark>
-                        mdi-pencil
-                      </v-icon>
-                    </v-btn>
-                  </v-col>
-
-                  <v-col class="btnitems">
-                    <v-btn
-                      @click="infoUser(i)"
+                      @click="infoUser(user)"
                       class="mx-2"
                       fab
                       dark
@@ -170,21 +123,6 @@
                     >
                       <v-icon dark>
                         mdi-eye
-                      </v-icon>
-                    </v-btn>
-                  </v-col>
-
-                  <v-col class="btnitems">
-                    <v-btn
-                      class="mx-2"
-                      fab
-                      dark
-                      small
-                      color="primary"
-                      @click="deleteUser(i)"
-                    >
-                      <v-icon dark>
-                        mdi-delete
                       </v-icon>
                     </v-btn>
                   </v-col>
@@ -257,7 +195,8 @@ export default {
     ...mapActions(["deleteUser", "searchUserDepen", "editUser"]),
 
     infoUser(i) {
-      this.selectedUser = this.$store.state.users[i];
+      console.log(i);
+      this.selectedUser = i;
       this.dialog = true;
     },
     changeFilter() {

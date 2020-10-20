@@ -11,7 +11,8 @@
         </p>
         <p>
           Para visualizar los datos que has agregado puedes verlo en Lista de
-          usuarios o Lista de dependencias según desees.
+          usuarios o Lista de dependencias según desees. Para realizar las busquedas de usuarios, se accede mediante la pestaña de Buscar Usuarios.
+          En esta pestaña es posible realizar la busqueda por nombre de usuario y nombre de dependecia
         </p>
       </v-card-text>
     </v-card>
